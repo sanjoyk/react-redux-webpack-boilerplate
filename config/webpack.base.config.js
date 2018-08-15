@@ -1,12 +1,15 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const WebpackManifestPlugin = require("webpack-manifest-plugin");
+
 module.exports = {
     entry: "./src/js/index.js",
     output: {
-        path: path.resolve(__dirname, "./dist"),
+        path: path.resolve(__dirname, "../dist"),
         publicPath: "/",
-        filename: "bundle.js"
+        filename: "[name].[hash].bundle.js",
+        chunkFilename: "[name].[hash].bundle.js"
     },
     module: {
         rules: [
@@ -46,7 +49,12 @@ module.exports = {
         new ExtractTextPlugin({
             filename: `application-[name]-[chunkhash].css`,
             allChunks: true
-        })
+        }),
+        new WebpackManifestPlugin({
+            fileName: "webpack.manifest.json",
+            serialize: (manifest) => JSON.stringify(manifest, null, 4),
+        }),
+
     ],
     resolve: {
         extensions: [".css", ".scss", ".js", ".jsx", "json"]
