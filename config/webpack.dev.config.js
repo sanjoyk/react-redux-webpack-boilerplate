@@ -26,6 +26,7 @@ module.exports = merge(base, {
                 "NODE_ENV": JSON.stringify("development")
             }
         }),
+        new webpack.NamedModulesPlugin(),
         // new DashboardPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new BundleAnalyzerPlugin({statsFilename: "bundle-analyze.json", generateStatsFile: true,  analyzerPort : 10001}),

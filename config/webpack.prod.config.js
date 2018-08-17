@@ -35,6 +35,7 @@ module.exports = merge(base, {
                     mangle: true
                 }
             }),
+            new webpack.HashedModuleIdsPlugin(),
             new ExtractTextPlugin({
                 filename: `application-[name]-[hash].css`,
                 allChunks: true
