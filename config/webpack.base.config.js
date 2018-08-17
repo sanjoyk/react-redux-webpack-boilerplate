@@ -47,10 +47,7 @@ module.exports = {
             template: "./src/index.html",
             filename: "./index.html"
         }),
-        new ExtractTextPlugin({
-            filename: `application-[name]-[hash].css`,
-            allChunks: true
-        }),
+        
         new WebpackManifestPlugin({
             fileName: "webpack.manifest.json",
             serialize: (manifest) => JSON.stringify(manifest, null, 4),

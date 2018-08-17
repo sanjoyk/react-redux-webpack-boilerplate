@@ -34,7 +34,11 @@ module.exports = merge(base, {
                     compress: true,
                     mangle: true
                 }
-            })
+            }),
+            new ExtractTextPlugin({
+                filename: `application-[name]-[hash].css`,
+                allChunks: true
+            }),
         ],
     },
     plugins: [
