@@ -1,10 +1,11 @@
 const base = require("./webpack.base.config");
 
+const path = require("path");
 const merge = require("webpack-merge");
 const webpack = require("webpack");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const path = require("path");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const BundleAnalyzerPlugin= require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(base, {
     mode: "production",
@@ -36,9 +37,10 @@ module.exports = merge(base, {
         ],
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
         new CleanWebpackPlugin(["dist"], {
             root: path.resolve(__dirname, "../")
-        })
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new BundleAnalyzerPlugin({statsFilename: "bundle-analyze.json", generateStatsFile: true,  analyzerPort : 10001}),
     ]
 })
