@@ -3,6 +3,7 @@ const base = require("./webpack.base.config");
 const path = require("path");
 const merge = require("webpack-merge");
 const webpack = require("webpack");
+
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin= require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
@@ -36,10 +37,7 @@ module.exports = merge(base, {
                 }
             }),
             new webpack.HashedModuleIdsPlugin(),
-            new ExtractTextPlugin({
-                filename: `application-[name]-[hash].css`,
-                allChunks: true
-            }),
+            
         ],
     },
     plugins: [
