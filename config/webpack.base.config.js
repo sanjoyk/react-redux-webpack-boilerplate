@@ -11,6 +11,7 @@ module.exports = {
         filename: "[name].[hash].bundle.js",
         chunkFilename: "[name].[hash].bundle.js"
     },
+    devtool: "eval",
     module: {
         rules: [
             {
@@ -47,7 +48,7 @@ module.exports = {
             filename: "./index.html"
         }),
         new ExtractTextPlugin({
-            filename: `application-[name]-[chunkhash].css`,
+            filename: `application-[name]-[hash].css`,
             allChunks: true
         }),
         new WebpackManifestPlugin({

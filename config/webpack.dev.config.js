@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const BundleAnalyzerPlugin= require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(base, {
-    devtool: "source-map",
+    devtool: "inline-source-map",
     mode: "development",
     devServer: {
         compress: true,
@@ -18,6 +18,7 @@ module.exports = merge(base, {
         open: 'Google Chrome',
         port: 10000,
         progress: true,
+        contentBase:"../dist"
     },
     plugins: [
         new webpack.DefinePlugin({
