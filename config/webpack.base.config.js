@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const WebpackManifestPlugin = require("webpack-manifest-plugin");
-
+const WebpackAssetsPlugin = require("assets-webpack-plugin");
 module.exports = {
     entry: "./src/js/index.js",
     output: {
@@ -52,7 +52,7 @@ module.exports = {
             fileName: "webpack.manifest.json",
             serialize: (manifest) => JSON.stringify(manifest, null, 4),
         }),
-
+        new WebpackAssetsPlugin()
     ],
     resolve: {
         extensions: [".css", ".scss", ".js", ".jsx", "json"]
