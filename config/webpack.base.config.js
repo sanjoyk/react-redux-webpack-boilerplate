@@ -8,8 +8,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "../dist"),
         publicPath: "/",
-        filename: "[name].[hash].bundle.js",
-        chunkFilename: "[name].[hash].bundle.js"
+        filename: "app.[name].[hash].bundle.js",
+        chunkFilename: "app.[name].[hash].bundle.js"
     },
     devtool: "eval",
     module: {
@@ -48,7 +48,7 @@ module.exports = {
             filename: "./index.html"
         }),
         new ExtractTextPlugin({ //move this to prod for performance
-            filename: `application-[name]-[hash].css`,
+            filename: `app.[name].[hash].css`,
             allChunks: true
         }),
         new WebpackManifestPlugin({
