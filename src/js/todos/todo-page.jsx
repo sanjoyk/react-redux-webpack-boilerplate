@@ -23,6 +23,27 @@ const getListStyle = isDraggingOver => ({
   display: 'inline-block',
 });
 
+const move = (source, destination, droppableSource, droppableDestination) => {
+  debugger;
+  const sourceClone = Array.from (source);
+  const destClone = Array.from (destination);
+  const [removed] = sourceClone.splice (droppableSource.index, 1);
+
+  destClone.splice (droppableDestination.index, 0, removed);
+
+  const result = {};
+  result[droppableSource.droppableId] = sourceClone;
+  result[droppableDestination.droppableId] = destClone;
+
+  return result;
+};
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from (list);
+  const [removed] = result.splice (startIndex, 1);
+  result.splice (endIndex, 0, removed);
+
+  return result;
+};
 class DroppableContainer extends Component {
   render () {
     const {droppableId, items} = this.props;
@@ -57,11 +78,64 @@ class DroppableContainer extends Component {
     );
   }
 }
+
 class TodoPage extends Component {
   state = {
     todo: getItems (10),
     inprogress: getItems (5, 10),
     done: getItems (5, 15),
+  };
+  id2List = {
+    todo: 'todo',
+    inprogress: 'inprogress',
+    done: 'done',
+  };
+  getList = id => {
+    console.log ('this.state[this.id2List[id]]', this.state[this.id2List[id]]);
+    return this.state[this.id2List[id]];
+  };
+
+  onDragEnd = result => {
+    const {source, destination} = result;
+
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      debugger;
+      const items = reorder (
+        this.getList (source.droppableId),
+        source.index,
+        destination.index
+      );
+
+      let state = {todo: items};
+
+      if (source.droppableId === 'inprogress') {
+        state = {inprogress: items};
+      }
+
+      if (source.droppableId === 'done') {
+        state = {done: items};
+      }
+
+      this.setState (state);
+    } else {
+      debugger;
+      const result = move (
+        this.getList (source.droppableId),
+        this.getList (destination.droppableId),
+        source,
+        destination
+      );
+      console.log ('result s====', result);
+      this.setState ({
+        [source.droppableId]: result[source.droppableId],
+        [destination.droppableId]: result[destination.droppableId],
+      });
+    }
   };
   render () {
     const {todo, inprogress, done} = this.state;
