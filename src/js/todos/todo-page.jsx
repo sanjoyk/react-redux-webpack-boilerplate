@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import {Button, Modal, Form, Input, Radio} from 'antd';
+const FormItem = Form.Item;
+import 'antd/dist/antd.css';
 
 const getItems = (count, offset = 0, content) =>
   Array.from ({length: count}, (v, k) => k).map (k => ({
@@ -249,17 +252,29 @@ class Task extends Component {
     const {showAddItemForm} = this.state;
     const {type} = this.props;
     return (
-      <div>
-        <h1>{type}</h1>
-        <button type="button" text={'add'} onClick={this.showAddItemForm}>
-          add
-        </button>
-        {showAddItemForm
-          ? <form>
-              <textarea ref={this.inputRef} />
-              <input type="submit" value="add" onClick={this.addNote} />
-            </form>
-          : null}
+      <div style={{width: '33%', textAlign: 'center'}}>
+        <h4
+          style={{
+            textTransform: 'capitalize',
+            padding: '10px',
+            backgroundColor: '#E2E4E6',
+          }}
+        >
+          {type}
+          <span
+            text={'add'}
+            style={{float: 'right'}}
+            onClick={this.showAddItemForm}
+          >
+            +
+          </span>
+        </h4>
+
+        <Modal visible={showAddItemForm} title="Add task" onOk={this.addNote}>
+          <form>
+            <textarea ref={this.inputRef} style={{width: '100%'}} />
+          </form>
+        </Modal>
       </div>
     );
   }
