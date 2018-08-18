@@ -6,8 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack-dev-server --config config/webpack.dev.config.js",
-    "build_dev": "webpack-dashboard -- ./node_modules/.bin/webpack-dev-server --config config/webpack.dev.config.js",
-    "build_production": "webpack-dashboard -- ./node_modules/.bin/webpack-dev-server --config config/webpack.prod.config.js",
     "build_prod": "webpack --config config/webpack.prod.config.js"
   },
   "author": "",
