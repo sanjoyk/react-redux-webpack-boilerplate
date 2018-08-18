@@ -3,10 +3,10 @@ const merge = require("webpack-merge");
 const path = require("path");
 const webpack = require('webpack');
 // const DashboardPlugin = require("webpack-dashboard/plugin");
-const BundleAnalyzerPlugin= require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(base, {
-    devtool: "inline-source-map",
+    devtool: "eval",
     mode: "development",
     devServer: {
         compress: true,
@@ -18,7 +18,7 @@ module.exports = merge(base, {
         open: 'Google Chrome',
         port: 10000,
         progress: true,
-        contentBase:"../dist"
+        contentBase: "../dist"
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -29,6 +29,10 @@ module.exports = merge(base, {
         new webpack.NamedModulesPlugin(),
         // new DashboardPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new BundleAnalyzerPlugin({statsFilename: "bundle-analyze.json", generateStatsFile: true,  analyzerPort : 10001}),
+        new BundleAnalyzerPlugin({
+            statsFilename: "bundle-analyze.json",
+            generateStatsFile: true,
+            analyzerPort: 10001
+        }),
     ]
 });

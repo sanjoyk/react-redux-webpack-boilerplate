@@ -13,34 +13,31 @@ module.exports = {
     },
     devtool: "eval",
     module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: [
-                    "babel-loader"
-                ]
-            }, {
-                test: /\.(css|scss)$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: [{
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: true,
-                            minimize: true,
-                        }
-                    }, {
-                        loader: "sass-loader",
-                        options: {
-                            sourceMap: true
-                        }
+        rules: [{
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            use: [
+                "babel-loader"
+            ]
+        }, {
+            test: /\.(css|scss)$/,
+            use: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: [{
+                    loader: "css-loader",
+                    options: {
+                        sourceMap: true,
+                        minimize: true,
                     }
-                    ],
-                    publicPath: "src/styles"
-                })
-            }
-        ]
+                }, {
+                    loader: "sass-loader",
+                    options: {
+                        sourceMap: true
+                    }
+                }],
+                publicPath: "src/styles"
+            })
+        }]
     },
     plugins: [
         new HtmlWebpackPlugin({
