@@ -1,21 +1,26 @@
-import {createStore, applyMiddleware} from "redux";
+import {
+  createStore,
+  applyMiddleware
+} from "redux";
 import reduxThunk from "redux-thunk";
 import reducers from "./app-reducers.js";
-import { composeWithDevTools } from "redux-devtools-extension";
+import {
+  composeWithDevTools
+} from "redux-devtools-extension";
 
-let middleware =[reduxThunk];//add logger for development
+let middleware = [reduxThunk]; //add logger for development
 
-let  composeEnhancers ;
+let composeEnhancers;
 
 composeEnhancers = composeWithDevTools({}); //add params
 
-let store ;
+let store;
 // console.log("process.env.NODE_ENV===", process.env.NODE_ENV);
-if(process.env.NODE_ENV === "development"){
+if (process.env.NODE_ENV === "development") {
   store = createStore(reducers, /* preloadedState, */ composeEnhancers(
     applyMiddleware(...middleware),
   ));
-}else{
+} else {
   store = createStore(reducers, applyMiddleware(...middleware));
 }
 

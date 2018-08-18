@@ -3,7 +3,7 @@ import reactDOM from "react-dom";
 
 const BookPage = () => (
   <div>
-    books page
+    book page
   </div>
 );
 export default BookPage;
