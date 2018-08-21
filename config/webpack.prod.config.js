@@ -19,18 +19,13 @@ module.exports = merge(base, {
             }
         },
         splitChunks: {
-            // chunks: "all",
+            chunks: "all",
+            minChunks: 1,
+            maxAsyncRequests: 150,
+            maxInitialRequests: 200,
             cacheGroups: {
+                // default: false,
 
-                polyfill: {
-                    name: "polyfill",
-                    chunks: "all",
-                    test: (module) => {
-                        const context = module.context;
-                        const targets = ["babel-polyfill"]
-                        return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
-                    },
-                },
 
                 antd: {
                     name: "antd",
@@ -38,12 +33,17 @@ module.exports = merge(base, {
                     test: (module) => {
                         const context = module.context;
                         const targets = ["antd"];
-                        // console.log("context====", context);
                         const results = context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1);
-                        // console.log(")))))))))))))))))))))))))))))");
-                        // console.log("results===", results);
-                        // console.log("(((((((((((((((((((((((((((((");
                         return results;
+                    },
+                },
+                reactdom: {
+                    name: "react-dom",
+                    chunks: "all",
+                    test: (module) => {
+                        const context = module.context;
+                        const targets = ["react-dom",];
+                        return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
                     },
                 },
                 react: {
@@ -51,7 +51,25 @@ module.exports = merge(base, {
                     chunks: "all",
                     test: (module) => {
                         const context = module.context;
-                        const targets = ["react", "react-dom", "redux"];
+                        const targets = ["react", "redux", "react-redux", "react-loadable", "prop-types"];
+                        return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}/`) > -1)
+                    },
+                },
+                "react-router": {
+                    name: "react-router",
+                    chunks: "all",
+                    test: (module) => {
+                        const context = module.context;
+                        const targets = ["react-router", "react-router-dom"];
+                        return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}/`) > -1)
+                    },
+                },
+                rc: {
+                    name: "rc-components",
+                    chunks: "all",
+                    test: (module) => {
+                        const context = module.context;
+                        const targets = ["rc-", "add-dom-event-listener"];
                         return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
                     },
                 },
@@ -73,13 +91,20 @@ module.exports = merge(base, {
                         return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
                     },
                 },
-                //check the validily
-                // default: {
-                //     minChunks: 2,
-                //     priority: -20,
-                //     reuseExistingChunk: true
-                // }
-
+                polyfill: {
+                    name: "polyfill",
+                    chunks: "all",
+                    test: (module) => {
+                        const context = module.context;
+                        const targets = ["babel-polyfill"]
+                        return context && context.indexOf("node_module") >= 0 && targets.find(t => {
+                            if (context.indexOf(`/${t}`) > -1) {
+                                console.log(context)
+                            }
+                            return context.indexOf(`/${t}`) > -1;
+                        })
+                    },
+                },
             }
         },
         minimizer: [
