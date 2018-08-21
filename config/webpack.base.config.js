@@ -3,6 +3,26 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const WebpackManifestPlugin = require("webpack-manifest-plugin");
 const WebpackAssetsPlugin = require("assets-webpack-plugin");
+
+const cssForProduction = ExtractTextPlugin.extract({
+    fallback: "style-loader",
+    use: [{
+        loader: "css-loader",
+        options: {
+            sourceMap: true,
+            minimize: true,
+            importLoaders: 1,
+        }
+    }, {
+        loader: "sass-loader",
+        options: {
+            sourceMap: true
+        }
+    }
+    ],
+    publicPath: "src/styles"
+});
+
 module.exports = {
     entry: "./src/js/index.js",
     output: {
@@ -19,7 +39,7 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     "babel-loader"
-                ]
+                ],
             }, {
                 test: /\.(css|scss)$/,
                 use: ExtractTextPlugin.extract({
@@ -29,6 +49,7 @@ module.exports = {
                         options: {
                             sourceMap: true,
                             minimize: true,
+                            importLoaders: 1,
                         }
                     }, {
                         loader: "sass-loader",

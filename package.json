@@ -8,13 +8,15 @@
     "build": "webpack-dev-server --config config/webpack.dev.config.js",
     "build_dev": "webpack-dashboard -- ./node_modules/.bin/webpack-dev-server --config config/webpack.dev.config.js",
     "build_production": "webpack-dashboard -- ./node_modules/.bin/webpack-dev-server --config config/webpack.prod.config.js",
-    "build_prod": "webpack --config config/webpack.prod.config.js"
+    "build_prod": "node --nolazy --inspect-brk=9229 ./node_modules/.bin/webpack --config config/webpack.prod.config.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "antd": "^3.8.1",
+    "babel-plugin-import": "^1.8.0",
     "babel-polyfill": "^6.26.0",
+    "postcss-loader": "^3.0.0",
     "promise-polyfill": "^8.1.0",
     "react": "16.4.2",
     "react-dom": "16.4.2",

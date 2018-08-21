@@ -6,18 +6,22 @@ const webpack = require("webpack");
 
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const BundleAnalyzerPlugin= require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(base, {
     mode: "production",
     devtool: "source-map",
     optimization: {
         runtimeChunk: {
-            name: entrypoint => `runtime~${entrypoint.name}`
+            name: entrypoint => {
+                // console.log("entry name==", entrypoint.name)
+                return `runtime~${entrypoint.name}`
+            }
         },
         splitChunks: {
-            chunks: "all",
+            // chunks: "all",
             cacheGroups: {
+
                 polyfill: {
                     name: "polyfill",
                     chunks: "all",
@@ -27,13 +31,45 @@ module.exports = merge(base, {
                         return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
                     },
                 },
+
+                antd: {
+                    name: "antd",
+                    chunks: "all",
+                    test: (module) => {
+                        const context = module.context;
+                        const targets = ["antd"];
+                        // console.log("context====", context);
+                        const results = context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1);
+                        // console.log(")))))))))))))))))))))))))))))");
+                        // console.log("results===", results);
+                        // console.log("(((((((((((((((((((((((((((((");
+                        return results;
+                    },
+                },
                 react: {
                     name: "react",
                     chunks: "all",
                     test: (module) => {
                         const context = module.context;
-                        
-                        const targets = ["react", "react-dom"]
+                        const targets = ["react", "react-dom", "redux"];
+                        return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
+                    },
+                },
+                babel: {
+                    name: "babel",
+                    chunks: "all",
+                    test: (module) => {
+                        const context = module.context;
+                        const targets = ["babel-runtime"];
+                        return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
+                    },
+                },
+                history: {
+                    name: "history",
+                    chunks: "all",
+                    test: (module) => {
+                        const context = module.context;
+                        const targets = ["history"];
                         return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
                     },
                 },
@@ -43,7 +79,7 @@ module.exports = merge(base, {
                 //     priority: -20,
                 //     reuseExistingChunk: true
                 // }
-                
+
             }
         },
         minimizer: [
@@ -69,6 +105,6 @@ module.exports = merge(base, {
             root: path.resolve(__dirname, "../")
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new BundleAnalyzerPlugin({statsFilename: "bundle-analyze.json", generateStatsFile: true,  analyzerPort : 10001}),
+        new BundleAnalyzerPlugin({ statsFilename: "bundle-analyze.json", generateStatsFile: true, analyzerPort: 10001 }),
     ]
 })
