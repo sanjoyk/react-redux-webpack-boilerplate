@@ -4,13 +4,14 @@ const path = require("path");
 const merge = require("webpack-merge");
 const webpack = require("webpack");
 
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(base, {
     mode: "production",
-    devtool: "source-map",
+    devtool: false,
     optimization: {
         runtimeChunk: {
             name: entrypoint => {
@@ -42,7 +43,7 @@ module.exports = merge(base, {
                     chunks: "all",
                     test: (module) => {
                         const context = module.context;
-                        const targets = ["react-dom",];
+                        const targets = ["react-dom", ];
                         return context && context.indexOf("node_module") >= 0 && targets.find(t => context.indexOf(`/${t}`) > -1)
                     },
                 },
@@ -99,7 +100,7 @@ module.exports = merge(base, {
                         const targets = ["babel-polyfill"]
                         return context && context.indexOf("node_module") >= 0 && targets.find(t => {
                             if (context.indexOf(`/${t}`) > -1) {
-                                console.log(context)
+                                // console.log(context)
                             }
                             return context.indexOf(`/${t}`) > -1;
                         })
@@ -111,7 +112,7 @@ module.exports = merge(base, {
             new UglifyJsPlugin({
                 cache: false,
                 parallel: true,
-                sourceMap: true,
+                sourceMap: false,
                 uglifyOptions: {
                     compress: true,
                     mangle: true
@@ -130,6 +131,12 @@ module.exports = merge(base, {
             root: path.resolve(__dirname, "../")
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].[hash].css",
+            chunkFilename: "[name].[hash].css"
+        }),
         new BundleAnalyzerPlugin({ statsFilename: "bundle-analyze.json", generateStatsFile: true, analyzerPort: 10001 }),
     ]
 })
