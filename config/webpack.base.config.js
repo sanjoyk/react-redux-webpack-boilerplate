@@ -4,6 +4,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const WebpackManifestPlugin = require("webpack-manifest-plugin");
 const WebpackAssetsPlugin = require("assets-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== 'production';
 
 
 module.exports = {
@@ -24,7 +25,8 @@ module.exports = {
             ],
         }, {
             test: /\.(css|scss)$/,
-            use: [MiniCssExtractPlugin.loader,
+            use: [
+                devMode ? "style-loader" : MiniCssExtractPlugin.loader,
                 "css-loader",
                 "sass-loader",
             ]
